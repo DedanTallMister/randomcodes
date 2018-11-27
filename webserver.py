@@ -1,0 +1,74 @@
+from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+from database_setup import Base, Restaurant, MenuItem
+import cgi
+class webserverHandler(BaseHTTPRequestHandler):
+	def do_GET(self):
+		try:
+			if self.path.endswith('/restaurants'):
+				engine = create_engine('sqlite:///restaurantmenu.db')
+				Base.metadata.bind = engine
+				DBSession = sessionmaker(bind = engine)
+				session = DBSession()
+				self.send_response(200)
+				self.send_header('Content-type', 'text/html')
+				self.end_headers()
+				output = '<html><body>'
+				rests = session.query(Restaurant).all()
+				for rest in rests:
+					output += "<h1>%s</h1> <br />" %rest.name
+					output += "<a href = '/restaurants/del'> DELETE</a> <br /><a href = '/restaurants/edit'> EDIT </a> <br /><br />"
+				output += "<a href = '/restaurants/new'><button type = 'button'>NEW</button></a>"
+				output += "</body></html>"
+				self.wfile.write(output)
+				return
+			if self.path.endswith('/new'):
+				self.send_response(200)
+		                self.send_header('Content-type', 'text/html')
+                                self.end_headers()
+                                output = ''
+                                output += "<html><body>Insert the name of the new restaurant <br /> <a href = '/hello'>Back</a>"
+                                output += "<form method='POST' enctype='multipart/form-data' action='/restaurants'><input name='rest' type='text'><input type='submit' value='Submit'></form>"
+                                output += "</body></html>"
+                                self.wfile.write(output)
+                                return
+
+		except IOError:
+			self.send_error(404, 'File not found %s' %self.path)
+
+	def do_POST(self):
+		try:
+			
+			if path.endswith('/restaurants/new'):
+				engine = create_engine('sqlite:///restaurantmenu.db')
+                                Base.metadata.bind = engine
+                                DBSession = sessionmaker(bind = engine)
+                                session = DBSession()
+
+				ctype, pdict = cgi.parse_header(self.headers.getheader('content-type'))
+				if ctype == 'multipart/form-data':
+					fields=cgi.parse_multipart(self.rfile, pdict)
+					messagecontent = fields.get('rest')
+					newRest = Restaurant(name=messagecontent[0])
+				session.add(newRest)
+				session.commit()
+				self.send_response(301)
+				self.send_header('Content-type', 'text/html')
+				self.send_header('Location', '/restaurants')
+				self.end_headers()
+		except:
+			pass
+def main():
+	try:
+		port = 8080
+		server = HTTPServer(('', port), webserverHandler)
+		print 'WebServer running on port %s' % port
+		server.serve_forever() 
+	
+	except KeyboardInterrupt:
+		print '^C entred, stopping server...'
+		server.socket.close()
+
+if __name__ == '__main__':
+	main()
