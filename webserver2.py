@@ -24,6 +24,7 @@ class webserverHandler(BaseHTTPRequestHandler):
 					output += "<form method = 'POST' enctype='multipart/form-data' action='/restaurants/%s/edit'>" %restNumber
 					output += "<input name='Edited' type = 'text' placholder = 'Edited'>"
 					output += "<input type = 'submit' value = 'Rename'>"
+					output += "</form>"
 					output += "</body></html>"
 					self.wfile.write(output)
 			if self.path.endswith('/del'):
@@ -37,6 +38,7 @@ class webserverHandler(BaseHTTPRequestHandler):
 					output += '<h1>Are you sure you want to delete the following Restaurant: %s?</h1>'%RestaurantQuery.name
 					output += "<form method = 'POST' enctype='multipart/form-data' action='/restaurants/%s/del'>" %restNumber
 					output += "<input type = 'submit' value = 'Elimina'>"
+					output += "</form>"
 					output += "</body></html>"
 					self.wfile.write(output)
 
@@ -49,6 +51,7 @@ class webserverHandler(BaseHTTPRequestHandler):
 				output += "<form method = 'POST' enctype='multipart/form-data' action='/restaurants/new'>"
 				output += "<input name='newRestaurantName' type = 'text' placholder = 'newRestaurantName'>"
 				output += "<input type = 'submit' value = 'Create'>"
+				output += "</form>"
 				output += "</body></html>"
 				self.wfile.write(output)
 				return
@@ -88,8 +91,6 @@ class webserverHandler(BaseHTTPRequestHandler):
 
 			if self.path.endswith('/del'):
 				ctype, pdict = cgi.parse_header(self.headers.getheader('content-type'))
-				if ctype == 'multipart/form-data':
-					fields = cgi.parse_multipart(self.rfile, pdict)
 				restNumber = self.path.split('/')[2]
 				RestaurantQuery = session.query(Restaurant).filter_by(id = restNumber)
 				if RestaurantQuery != []:
