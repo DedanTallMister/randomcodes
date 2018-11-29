@@ -87,6 +87,9 @@ class webserverHandler(BaseHTTPRequestHandler):
 				self.end_headers
 
 			if self.path.endswith('/del'):
+				ctype, pdict = cgi.parse_header(self.headers.getheader('content-type'))
+				if ctype == 'multipart/form-data':
+					fields = cgi.parse_multipart(self.rfile, pdict)
 				restNumber = self.path.split('/')[2]
 				RestaurantQuery = session.query(Restaurant).filter_by(id = restNumber)
 				if RestaurantQuery != []:
