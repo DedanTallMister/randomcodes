@@ -90,9 +90,8 @@ class webserverHandler(BaseHTTPRequestHandler):
 					self.end_headers
 
 			if self.path.endswith('/del'):
-				ctype, pdict = cgi.parse_header(self.headers.getheader('content-type'))
-				restNumber = self.path.split('/')[2]
-				RestaurantQuery = session.query(Restaurant).filter_by(id = restNumber)
+				restNumber = self.path.split("/")[2]
+				RestaurantQuery = session.query(Restaurant).filter_by(id = restNumber).one()
 				if RestaurantQuery != []:
 					session.delete(RestaurantQuery)
 					session.commit()
