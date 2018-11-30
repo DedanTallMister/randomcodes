@@ -1,6 +1,9 @@
 from flask import Flask
 app = Flask(__name__)
 
+DBSession = sessionmaker (bind = engine)
+sesion = DBSession()
+
 @app.route('/')
 @app.route('/hello')
 def HelloWorld():
