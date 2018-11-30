@@ -7,7 +7,7 @@ app = Flask(__name__)
 engine = create_engine('sqlite:///restaurantmenu.db')
 Base.metadata.bind = engine
 DBSession = sessionmaker (bind = engine)
-sesion = DBSession()
+session = DBSession()
 
 @app.route('/')
 @app.route('/hello')
