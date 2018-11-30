@@ -7,6 +7,7 @@ def HelloWorld():
 	rest = session.query(Restaurant).first()
 	items = session.query(MenuItem).filter_by(restaurant_id = rest.id)
 	output = ''
+	output += '<h1>%s</h1>' %rest.name
 	for item in items:
 		output += item.name
 		output += '<br />'
