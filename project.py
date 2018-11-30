@@ -1,6 +1,9 @@
 from flask import Flask
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
 app = Flask(__name__)
-
+engine = create_engine('sqlite:///restaurantmenu.db')
+Base.metadata.bind = engine
 DBSession = sessionmaker (bind = engine)
 sesion = DBSession()
 
