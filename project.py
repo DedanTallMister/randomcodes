@@ -19,6 +19,8 @@ def HelloWorld():
 	for item in items:
 		output += item.name
 		output += '<br />'
+		output += item.description
+		output += '<br />'
 		output += item.price
 		output += '<br />'
 		output += '<br />'
