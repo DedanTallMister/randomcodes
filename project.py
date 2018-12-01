@@ -11,7 +11,7 @@ session = DBSession()
 
 @app.route('/')
 @app.route('/restaurants/<int:restaurant_id>/')
-def DisplayRestaurants():
+def DisplayRestaurants(restaurant_id):
 	rest = session.query(Restaurant).first()
 	items = session.query(MenuItem).filter_by(restaurant_id = rest.id)
 	output = ''
