@@ -15,7 +15,7 @@ session = DBSession()
 def DisplayRestaurants(restaurant_id):
 	rest = session.query(Restaurant).filter_by(id=restaurant_id).one()
 	items = session.query(MenuItem).filter_by(restaurant_id = rest.id)
-	return render_template('menu.html', i = items)
+	return render_template('menu.html', i = items, restaurant = rest)
 	'''output = ''
 	output += '<h1>%s</h1>' %rest.name
 	for item in items:
