@@ -2,8 +2,6 @@
 	<body>
 		<h1>{{ restaurant.name }}</h1>
 			<a href = "{{url_for('newMenuItem', restaurant_id = restaurant.id)}}">New Item</a>
-		{%for i in items %}
-
 		{% with messages = get_flashed_messages()%}
 			{%if messages%}
 			<ul>
@@ -13,6 +11,7 @@
 			</ul>
 			{%endif%}
 		{%endwith%}
+		{%for i in items %}
 			<div>
 				<h2><p>{{ i.name }}</p></h2>
 
