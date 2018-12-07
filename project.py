@@ -75,7 +75,7 @@ def restaurantMenuJSON(restaurant_id):
 def restaurantMenuItemJSON(restaurant_id, menu_id):
 	restaurant = session.query(Restaurant).filter_by(id = restaurant_id).one()
 	item = session.query(MenuItem).filter_by(id = menu_id).one()
-	return jsonify(MenuItem=item)
+	return jsonify(MenuItem=[item.serialize])
 
 if __name__ == '__main__':
 	app.secret_key = 'super_secret_key'
